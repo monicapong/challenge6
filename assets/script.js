@@ -84,7 +84,9 @@ renderForecast('Miami');
 
 //Add search history button to search section
 function searchHistoryButton(city) {
-    if (!searchHistoryList.includes(city)) {
+    if (city == '') {
+        return;
+    }else if (!searchHistoryList.includes(city)) {
         searchHistoryList.push(city);
         localStorage.setItem('city', JSON.stringify(searchHistoryList));
     }
