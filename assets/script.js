@@ -4,18 +4,25 @@ var forecast = $('#weatherForecast');
 var searchHistory = $('#searchHistory');
 var searchHistoryList = [];
 
+//Request current weather for local city 
 function renderCurrentWeather(city) {
+    //Weather API link
     var requestURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${apiKey}`;
 
+    //Request weather data
     $.ajax({
         url: requestURL,
         method: 'GET'
+        //Weather API response
     }).then(function(cityWeatherResponse) {
+        //Clear current weather section
         $(currentWeather).empty();
 
+        //Link to weather icon
         var weatherIcon = cityWeatherResponse.weather[0].icon;
         var iconURL = `https://openweathermap.org/img/w/${weatherIcon}.png`;
 
+        //Display current weather for local city 
         currentWeather.append(`
             <h2>
                 ${cityWeatherResponse.name} (${moment().format('L')}) 
@@ -26,17 +33,24 @@ function renderCurrentWeather(city) {
             <p>Humidity: ${cityWeatherResponse.main.humidity}\%</p>
         `);
 
+        //Center text
         $(currentWeather).css('text-align', 'center');
     });
 };
 
+//Request weather forecast for local city
 function renderForecast(city) {
+    //Weather API link
     requestURL = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${apiKey}`;
 
+    //Request weather forecast data and weather API response
     $.get(requestURL).then(function(forecastResponse){
+        //Forecast list
         weatherForecast = forecastResponse.list;
+        //Clear forecast section
         forecast.empty();
 
+        //Display data for 5 day weather forecast 
         $.each(weatherForecast, function(i) {
             if (!weatherForecast[i].dt_txt.includes("12:00:00")) {
                 return;
@@ -64,9 +78,11 @@ function renderForecast(city) {
     })
 };
 
+//Display Miami weather as default
 renderCurrentWeather('Miami');
 renderForecast('Miami');
 
+//Add search history button to search section
 function searchHistoryButton(city) {
     if (!searchHistoryList.includes(city)) {
         searchHistoryList.push(city);
@@ -78,6 +94,7 @@ function searchHistoryButton(city) {
     `);
 }
 
+//When the search button is clicked, then the current weather and forecast for the local city is displayed
 $("#searchBtn").on("click", function(event) {
     event.preventDefault();
 
@@ -88,6 +105,7 @@ $("#searchBtn").on("click", function(event) {
     searchHistoryButton(city);
 });
 
+//Current weather and forecast for previous search history city is displayed 
 $(document).on('click', '.btn', function() {
     var searchedCity = $(this).text();
     renderCurrentWeather(searchedCity);
