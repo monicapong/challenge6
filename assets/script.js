@@ -19,15 +19,14 @@ function renderCurrentWeather(city) {
         $(currentWeather).empty();
 
         //Link to weather icon
-        var weatherIcon = cityWeatherResponse.weather[0].icon;
-        var iconURL = `https://openweathermap.org/img/w/${weatherIcon}.png`;
+        var weatherIcon = `https://openweathermap.org/img/w/${cityWeatherResponse.weather[0].icon}.png`;
 
         //Display current weather for local city 
         currentWeather.append(`
             <h2>
                 ${cityWeatherResponse.name} (${moment().format('L')}) 
             </h2>
-            <img src='${iconURL}'>
+            <img src='${weatherIcon}'>
             <p>Temperature: ${cityWeatherResponse.main.temp} °F</p>
             <p>Wind: ${cityWeatherResponse.wind.speed} MPH</p>
             <p>Humidity: ${cityWeatherResponse.main.humidity}\%</p>
@@ -113,3 +112,16 @@ $(document).on('click', '.btn', function() {
     renderCurrentWeather(searchedCity);
     renderForecast(searchedCity);
 });
+
+//Retrieve past search history and display
+function init() {
+    if (localStorage.getItem("city")) {
+        citiesArray = JSON.parse(localStorage.getItem('city'));
+        $.each(citiesArray, function(i) {
+            searchHistoryButton(citiesArray[i]);
+        });
+    };
+};
+
+//Display previous searches when page loads 
+init();
