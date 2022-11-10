@@ -42,3 +42,7 @@ h2, h3 {
     max-height: 408px;
     overflow: auto;
 }
+
+.btn {
+    margin: 5px;
+}
