@@ -40,7 +40,7 @@ function renderCurrentWeather(city) {
 //Request weather forecast for local city
 function renderForecast(city) {
     //Weather API link
-    requestURL = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${apiKey}`;
+    requestURL = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=imperial&appid=${apiKey}`;
 
     //Request weather forecast data and weather API response
     $.get(requestURL).then(function(forecastResponse){
