@@ -1,6 +1,8 @@
 var apiKey = "3de7f199adb168e35cb20780e93be5af";
 var currentWeather = $('#currentWeather');
 var forecast = $('#weatherForecast');
+var searchHistory = $('#searchHistory');
+var searchHistoryList = [];
 
 function renderCurrentWeather(city) {
     var requestURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${apiKey}`;
@@ -39,8 +41,9 @@ function renderForecast(city) {
             if (!weatherForecast[i].dt_txt.includes("12:00:00")) {
                 return;
             }
-            let forecastDate = new Date(weatherForecast[i].dt*1000);
-            let weatherIcon = `https://openweathermap.org/img/wn/${weatherForecast[i].weather[0].icon}.png`;
+
+            forecastDate = new Date(weatherForecast[i].dt*1000);
+            weatherIcon = `https://openweathermap.org/img/wn/${weatherForecast[i].weather[0].icon}.png`;
 
             forecast.append(`
             <div class="col-md">
@@ -64,10 +67,29 @@ function renderForecast(city) {
 renderCurrentWeather('Miami');
 renderForecast('Miami');
 
+function searchHistoryButton(city) {
+    if (!searchHistoryList.includes(city)) {
+        searchHistoryList.push(city);
+        localStorage.setItem('city', JSON.stringify(searchHistoryList));
+    }
+
+    $(searchHistory).prepend(`
+        <button class="btn btn-light">${city}</button>
+    `);
+}
+
 $("#searchBtn").on("click", function(event) {
     event.preventDefault();
 
     var city = $('#cityInput').val().trim();
+
     renderCurrentWeather(city);
     renderForecast(city);
+    searchHistoryButton(city);
+});
+
+$(document).on('click', '.btn', function() {
+    var searchedCity = $(this).text();
+    renderCurrentWeather(searchedCity);
+    renderForecast(searchedCity);
 });
