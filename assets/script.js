@@ -64,7 +64,7 @@ function renderForecast(city) {
                     <div class="card-body">
                         <h4>${forecastDate.getMonth()+1}/${forecastDate.getDate()}/${forecastDate.getFullYear()}</h4>
                         <img src=${weatherIcon} alt="Icon">
-                        <p>Temp: ${weatherForecast[i].main.temp} &#176;C</p>
+                        <p>Temp: ${weatherForecast[i].main.temp} &#176;F</p>
                         <p>Wind: ${weatherForecast[i].wind.speed} m/s</p>
                         <p>Humidity: ${weatherForecast[i].main.humidity}%</p>
                     </div>
